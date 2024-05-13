@@ -8,7 +8,7 @@ EduHub is an open-source Learning Management System (LMS).
 - Install Node and NPM
 
 ## Run
-Run the following code 
+Run the following code.
 
 > ```
 > cd src
