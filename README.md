@@ -10,6 +10,7 @@ Subject to change, still need install stuff for database.
 
 ## Run
 Run the following code.
+**Note:** A .env file is needed to run the app. Contact admin for more details.
 
 > ```
 > cd src
