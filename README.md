@@ -7,9 +7,9 @@ EduHub is an open-source Learning Management System (LMS).
 - Install Composer
 - Install Node and NPM
 - Run the following code
-> ```
-> cd src
-> ```
-> ```
-> php artisan serve
-> ```
+    > ```
+    > cd src
+    > ```
+    > ```
+    > php artisan serve
+    > ```
