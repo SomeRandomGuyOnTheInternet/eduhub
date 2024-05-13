@@ -9,8 +9,8 @@ Subject to change, still need install stuff for database.
 - Install Node and NPM
 
 ## Run
+**Note:** A .env file is needed to run the app. Contact admin for more details.<br>
 Run the following code.
-**Note:** A .env file is needed to run the app. Contact admin for more details.
 
 > ```
 > cd src
