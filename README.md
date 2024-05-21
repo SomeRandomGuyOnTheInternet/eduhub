@@ -7,6 +7,7 @@ Subject to change, still need install stuff for database.
 - Install PHP
 - Install Composer
 - Install Node and NPM
+- Install MySQL
 
 ## Run
 **Note:** A .env file is needed to run the app. Contact admin for more details.<br>
