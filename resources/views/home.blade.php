@@ -28,7 +28,7 @@
         </style> --}}
 </head>
 
-<body class="radio-canada-big-medium antialiased dark:bg-black dark:text-white/50">
+<body class="">
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -40,6 +40,30 @@
             </form>
         </div>
     </nav>
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Web Programming</h5>
+                        <p class="card-text"><small class="text-muted">CSC 1106</small></p>
+                        <p class="card-text">3 deadlines this week</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Operating Systems</h5>
+                        <p class="card-text"><small class="text-muted">CSC 1107</small></p>
+                        <p class="card-text">2 deadlines this week</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
