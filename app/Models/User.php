@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Discussion::class, 'user_id');
     }
+
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }
