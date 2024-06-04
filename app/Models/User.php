@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,11 +14,7 @@ class User extends Authenticatable
     protected $fillable = ['first_name', 'last_name', 'email', 'password', 'user_type', 'university_id'];
 
     protected $hidden = ['password', 'remember_token'];
-
-    public function university()
-    {
-        return $this->belongsTo(University::class, 'university_id');
-    }
+    protected $appends = ['name'];
 
     public function student()
     {
@@ -43,6 +38,11 @@ class User extends Authenticatable
 
     public function getNameAttribute()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    public static function getUsersByType($type)
+    {
+        return self::where('user_type', $type)->get()->pluck('name', 'user_id');
     }
 }

@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('faculties', function (Blueprint $table) {
             $table->bigIncrements('faculty_id');
             $table->string('faculty_name', 50)->unique();
-            $table->unsignedBigInteger('university_id');
             $table->timestamps();
-
-            $table->foreign('university_id')->references('university_id')->on('universities')->onDelete('cascade');
         });
     }
 

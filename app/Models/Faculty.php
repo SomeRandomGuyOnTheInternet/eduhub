@@ -10,12 +10,6 @@ class Faculty extends Model
     use HasFactory;
 
     protected $primaryKey = 'faculty_id';
-    protected $fillable = ['faculty_name', 'university_id'];
-
-    public function university()
-    {
-        return $this->belongsTo(University::class, 'university_id');
-    }
 
     public function students()
     {

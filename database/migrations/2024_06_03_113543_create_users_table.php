@@ -18,10 +18,7 @@ return new class extends Migration
             $table->string('email', 100)->unique();
             $table->string('password', 255);
             $table->enum('user_type', ['student', 'professor', 'admin']);
-            $table->unsignedBigInteger('university_id')->nullable();
             $table->timestamps();
-
-            $table->foreign('university_id')->references('university_id')->on('universities')->onDelete('set null');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

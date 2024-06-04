@@ -12,13 +12,4 @@ class University extends Model
     protected $primaryKey = 'university_id';
     protected $fillable = ['university_name', 'domain', 'logo'];
 
-    public function users()
-    {
-        return $this->hasMany(User::class, 'university_id');
-    }
-
-    public function faculties()
-    {
-        return $this->hasMany(Faculty::class, 'university_id');
-    }
 }

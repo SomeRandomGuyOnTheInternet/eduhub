@@ -20,7 +20,6 @@ class AdminSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => Hash::make('password'), // Use a secure password
             'user_type' => 'admin',
-            'university_id' => 1, // Assuming an existing university_id or set it to null if optional
             'created_at' => now(),
             'updated_at' => now(),
         ]);
