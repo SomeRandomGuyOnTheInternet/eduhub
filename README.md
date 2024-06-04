@@ -20,7 +20,7 @@ Run the following code.
 > php artisan serve
 > ```
 
-## Steps to Run (03/04/2024)
+## Steps to Run (04/04/2024)
 1. Run composer install in terminal
 2. Rename .env.example to .env
 3. In .env, change DB password (line 27)
@@ -28,6 +28,11 @@ Run the following code.
 5. Run php artisan migrate in terminal
 6. Run php artisan key:generate in terminal
 7. Run php artisan storage:link in terminal
-8. Run npm install in terminal
-9. Run npm run dev in terminal
-10. Open another terminal, run php artisan serve
+8. Run php artisan migrate:fresh --seed in terminal
+9. Run npm install in terminal
+10. Run npm run dev in terminal
+11. Open another terminal, run php artisan serve
+
+## If you have already set it up and there were migration changes
+1. Run php artisan migrate:fresh --seed in terminal if you want to delete all records and seed with default records
+2. Run php artisan db:seed if you want to seed with default records but not lose previous records (might have conflicts)

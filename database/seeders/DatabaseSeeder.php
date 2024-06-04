@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Enrollment;
 use App\Models\Faculty;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,8 +16,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            UserSeeder::class,
             UniversitySeeder::class,
             FacultySeeder::class,
+            ProfessorSeeder::class,
+            ModuleSeeder::class,
+            StudentSeeder::class,
+            EnrollmentSeeder::class,
             AdminSeeder::class,
         ]);
     }

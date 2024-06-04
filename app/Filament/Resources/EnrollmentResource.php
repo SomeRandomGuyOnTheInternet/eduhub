@@ -26,6 +26,8 @@ class EnrollmentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 5;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -53,7 +55,7 @@ class EnrollmentResource extends Resource
                 TextColumn::make('module.module_name')->label('Module Name')->searchable(),
                 TextColumn::make('enrollment_date')->label('Enrollment Date')->sortable(),
             ])
-            ->filters([])
+            ->filters([Tables\Filters\SelectFilter::make('module_id')->relationship('module', 'module_name')->label('Module')])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

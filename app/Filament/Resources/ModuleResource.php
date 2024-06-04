@@ -26,6 +26,8 @@ class ModuleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 4;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -55,7 +57,7 @@ class ModuleResource extends Resource
                 TextColumn::make('professor.user.name')->label('Professor')->searchable(),
                 TextColumn::make('faculty.faculty_name')->label('Faculty')->searchable(),
             ])
-            ->filters([])
+            ->filters([Tables\Filters\SelectFilter::make('faculty_id')->relationship('faculty', 'faculty_name')->label('Faculty')])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

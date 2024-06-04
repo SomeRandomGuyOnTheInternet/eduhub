@@ -21,6 +21,7 @@ class ProfessorResource extends Resource
     protected static ?string $model = Professor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -44,7 +45,7 @@ class ProfessorResource extends Resource
                 TextColumn::make('user.name')->label('User Name')->searchable(),
                 TextColumn::make('faculty.faculty_name')->label('Faculty')->searchable(),
             ])
-            ->filters([])
+            ->filters([Tables\Filters\SelectFilter::make('faculty_id')->relationship('faculty', 'faculty_name')->label('Faculty')])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

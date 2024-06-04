@@ -25,6 +25,8 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -52,7 +54,7 @@ class StudentResource extends Resource
                 TextColumn::make('faculty.faculty_name')->label('Faculty')->searchable(),
                 TextColumn::make('gamepoints')->label('Game Points')->sortable(),
             ])
-            ->filters([])
+            ->filters([Tables\Filters\SelectFilter::make('faculty_id')->relationship('faculty', 'faculty_name')->label('Faculty')])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

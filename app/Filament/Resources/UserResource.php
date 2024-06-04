@@ -19,6 +19,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -33,16 +35,11 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(100),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\Select::make('user_type')
                     ->required()
                     ->options([
                         'student' => 'Student',
                         'professor' => 'Professor',
-                        'admin' => 'Admin',
                     ]),
             ]);
     }
