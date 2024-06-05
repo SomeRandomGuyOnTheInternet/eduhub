@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\DatePicker;
 
 class UserResource extends Resource
 {
@@ -35,6 +36,8 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(100),
+                DatePicker::make('date_of_birth')
+                    ->required(),
                 Forms\Components\Select::make('user_type')
                     ->required()
                     ->options([
@@ -55,6 +58,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user_type'),
+                Tables\Columns\TextColumn::make('date_of_birth')
+                    ->date()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -66,11 +72,11 @@ class UserResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('user_type')
-                ->options([
-                    'student' => 'Student',
-                    'professor' => 'Professor',
-                    'admin' => 'Admin',
-                ]),
+                    ->options([
+                        'student' => 'Student',
+                        'professor' => 'Professor',
+                        'admin' => 'Admin',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

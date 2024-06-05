@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->bigIncrements('student_id');
             $table->unsignedBigInteger('user_id');
-            $table->date('date_of_birth');
             $table->unsignedBigInteger('faculty_id')->nullable();
             //$table->integer('gamepoints')->default(0);
             $table->timestamps();

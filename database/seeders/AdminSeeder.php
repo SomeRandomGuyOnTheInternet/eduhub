@@ -18,6 +18,7 @@ class AdminSeeder extends Seeder
             'first_name' => 'Admin',
             'last_name' => 'User',
             'email' => 'admin@example.com',
+            'date_of_birth' => '1996-07-11',
             'password' => Hash::make('password'), // Use a secure password
             'user_type' => 'admin',
             'created_at' => now(),

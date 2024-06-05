@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('first_name', 50);
             $table->string('last_name', 50);
             $table->string('email', 100)->unique();
+            $table->date('date_of_birth');
             $table->string('password', 255);
             $table->enum('user_type', ['student', 'professor', 'admin']);
             $table->timestamps();

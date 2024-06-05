@@ -36,8 +36,6 @@ class StudentResource extends Resource
                     ->options(User::getUsersByType('student'))
                     ->searchable()
                     ->required(),
-                DatePicker::make('date_of_birth')
-                    ->required(),
                 Select::make('faculty_id')
                     ->relationship('faculty', 'faculty_name')
                     ->required(),
@@ -50,7 +48,6 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user.name')->label('User Name')->searchable(),
-                TextColumn::make('date_of_birth')->label('Date of Birth')->date()->sortable(),
                 TextColumn::make('faculty.faculty_name')->label('Faculty')->searchable(),
                 //TextColumn::make('gamepoints')->label('Game Points')->sortable(),
             ])
