@@ -41,7 +41,7 @@ class StudentResource extends Resource
                 Select::make('faculty_id')
                     ->relationship('faculty', 'faculty_name')
                     ->required(),
-                TextInput::make('gamepoints')->numeric()->default(0),
+                //TextInput::make('gamepoints')->numeric()->default(0),
             ]);
     }
 
@@ -52,7 +52,7 @@ class StudentResource extends Resource
                 TextColumn::make('user.name')->label('User Name')->searchable(),
                 TextColumn::make('date_of_birth')->label('Date of Birth')->date()->sortable(),
                 TextColumn::make('faculty.faculty_name')->label('Faculty')->searchable(),
-                TextColumn::make('gamepoints')->label('Game Points')->sortable(),
+                //TextColumn::make('gamepoints')->label('Game Points')->sortable(),
             ])
             ->filters([Tables\Filters\SelectFilter::make('faculty_id')->relationship('faculty', 'faculty_name')->label('Faculty')])
             ->actions([

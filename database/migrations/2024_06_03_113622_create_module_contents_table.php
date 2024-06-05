@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('module_contents', function (Blueprint $table) {
             $table->bigIncrements('content_id');
-            $table->unsignedBigInteger('module_id');
+            $table->unsignedBigInteger('module_folder_id');
             $table->string('title', 100);
             $table->text('description')->nullable();
             $table->string('file_path', 255)->nullable();
@@ -21,11 +21,11 @@ return new class extends Migration
             $table->boolean('visited')->default(false);
             $table->timestamps();
 
-            $table->foreign('module_id')->references('module_id')->on('modules')->onDelete('cascade');
+            $table->foreign('module_folder_id')->references('module_folder_id')->on('module_folders')->onDelete('cascade');
         });
 
         Schema::table('module_contents', function (Blueprint $table) {
-            $table->index('module_id');
+            $table->index('module_folder_id');
         });
     }
 

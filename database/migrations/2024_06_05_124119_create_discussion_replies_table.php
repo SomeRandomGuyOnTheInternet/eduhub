@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
-            $table->bigIncrements('student_id');
+        Schema::create('discussion_replies', function (Blueprint $table) {
+            $table->bigIncrements('discussion_replies_id');
+            $table->unsignedBigInteger('discussion_id');
             $table->unsignedBigInteger('user_id');
-            $table->date('date_of_birth');
-            $table->unsignedBigInteger('faculty_id')->nullable();
-            //$table->integer('gamepoints')->default(0);
+            $table->text('reply');
             $table->timestamps();
 
+            $table->foreign('discussion_id')->references('discussion_id')->on('discussions')->onDelete('cascade');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('faculty_id')->references('faculty_id')->on('faculties')->onDelete('set null');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('discussion_replies');
     }
 };

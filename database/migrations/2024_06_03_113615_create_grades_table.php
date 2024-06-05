@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->bigIncrements('grade_id');
-            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('assignment_id');
             $table->string('grade', 10);
             $table->string('score', 10);
             $table->text('feedback')->nullable();
             $table->timestamps();
 
-            $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('assignment_id')->references('assignment_id')->on('assignments')->onDelete('cascade');
         });
 
         Schema::table('grades', function (Blueprint $table) {
-            $table->index('student_id');
+            $table->index('user_id');
             $table->index('assignment_id');
         });
     }

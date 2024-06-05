@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('discussion_id');
             $table->unsignedBigInteger('module_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('title', 100);
             $table->text('content');
             $table->timestamp('timestamp')->useCurrent();
             $table->timestamps();
