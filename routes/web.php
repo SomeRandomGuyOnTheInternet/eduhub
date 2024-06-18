@@ -2,21 +2,14 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-<<<<<<< Updated upstream
 use App\Http\Controllers\QuizController;
-=======
 // use App\Http\Controllers\ModuleContentController;
 use App\Http\Controllers\ModuleContentController;
-
-
-
->>>>>>> Stashed changes
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-<<<<<<< Updated upstream
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -43,8 +36,8 @@ Route::post('quizzes/{quiz}/attempt', [QuizController::class, 'attempt'])->name(
 Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes');
 
 
-=======
 //Route::get('/modules/{module}/content', 'ModuleContentController@index')->name('modules.content');  // Define routes in your routes/web.php file to handle requests to your content page.
 Route::get('/modules/{module}/module/content',[ModuleContentController::class, 'index'])->name('modules.content'); 
 // Route::get('/emails/{id}', [EmailController::class, 'show'])->name('email.show');  
->>>>>>> Stashed changes
+
+require __DIR__.'/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.
