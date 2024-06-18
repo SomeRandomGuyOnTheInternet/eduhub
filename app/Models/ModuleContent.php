@@ -10,10 +10,11 @@ class ModuleContent extends Model
     use HasFactory;
 
     protected $primaryKey = 'content_id';
-    protected $fillable = ['module_id', 'title', 'description', 'file_path', 'visited'];
+    // protected $fillable = ['module_folder_id', 'title', 'description', 'file_path', 'visited'];
+    protected $fillable = ['module_folder_id', 'title', 'description', 'file_path', 'visited'];
 
     public function module()
     {
-        return $this->belongsTo(Module::class, 'module_id');
+        return $this->belongsTo(Module::class, 'module_folder_id');
     }
 }
