@@ -106,4 +106,3 @@ class QuizController extends Controller
         return view('quizzes.user_quizzes', compact('quizAttempts'));
     }
 }
-?>
