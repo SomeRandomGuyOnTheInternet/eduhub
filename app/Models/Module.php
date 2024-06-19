@@ -47,9 +47,4 @@ class Module extends Model
         return $this->hasMany(ModuleContent::class, 'module_id');
     }
 
-    // Define the relationship with the Student model through Enrollment(Chris dashboard)
-    public function students()
-    {
-        return $this->belongsToMany(Student::class, 'enrollments', 'module_id', 'student_id');
-    }
-}
+   

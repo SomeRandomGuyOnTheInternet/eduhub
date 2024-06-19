@@ -32,9 +32,4 @@ class Student extends Model
         return $this->hasMany(Grade::class, 'student_id');
     }
 
-    // Define the relationship with the Module model through Enrollment(Chris Dashboard)
-    public function modules()
-    {
-        return $this->belongsToMany(Module::class, 'enrollments', 'student_id', 'module_id');
-    }
-}
+   
