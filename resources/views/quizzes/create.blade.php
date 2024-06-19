@@ -14,6 +14,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <form action="{{ route('quizzes.store') }}" method="POST">
             @csrf
             <div class="form-group">
