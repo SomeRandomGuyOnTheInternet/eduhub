@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ModuleContent;
 use App\Models\Module;
+use App\Models\News;
 
 class ModuleContentController extends Controller
 {
@@ -22,6 +23,12 @@ class ModuleContentController extends Controller
             $moduleName = optional($moduleContents->first()->module)->module_name ?? 'No Module Name';
         }
 
-        return view('content.content_dashboard', compact('moduleContents', 'moduleName'));
+
+        /* Author Nelson */
+        //fetch news for the module
+        $newsItems = News::where('module_id', 1) // !!! module id to be dynamic in future
+                        ->get();
+
+        return view('content.content_dashboard', compact('moduleContents', 'moduleName','newsItems'));
     }
 }

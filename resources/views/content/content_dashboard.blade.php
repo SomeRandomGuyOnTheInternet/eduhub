@@ -56,6 +56,21 @@
             </tbody>
         </table>
     @endif
+    <!--     
+    Author: Nelson
+    // codes for button on professor side when authentication for module page is done
+    @if (Auth::user()->role == 'professor')
+                    <a href="{{ route('news.create') }}" class="btn btn-primary mb-4">Create News</a>
+    @endif
+    -->
+    <a href="{{ route('news.create') }}" class="btn btn-primary mb-4">Create News</a>
+    @if ($newsItems->isEmpty()) 
+
+        <p>No news found for this module folder.</p>
+    @else
+        <!-- incluce the news view -->
+         @include('news.show', ['newsItems' => $newsItems])
+    @endif
 </div>
 
 @endsection
