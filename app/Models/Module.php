@@ -47,4 +47,4 @@ class Module extends Model
         return $this->hasMany(ModuleContent::class, 'module_id');
     }
 
-   
+}
