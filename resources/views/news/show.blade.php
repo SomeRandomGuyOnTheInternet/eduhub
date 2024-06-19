@@ -39,12 +39,14 @@
             <div class="card news-card">
                 <div class="news-header">
                     <div class="edit-delete-buttons">
+                        @if (Auth::user()->user_type == 'professor')
                         <a href="{{ route('news.edit', ['newsId' => $news->news_id]) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('news.delete', ['newsId' => $news->news_id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                         </form>
+                        @endif
                     </div>
                     <h5 class="card-title">{{ $news->news_title }}</h5>
                     @if (!empty($news->updated_at))
