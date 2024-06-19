@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/news/{moduleId}', [NewsController::class, 'show'])->name('news.show'); //Route to show news
-    Route::get('/dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
+    
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
