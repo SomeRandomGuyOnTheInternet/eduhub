@@ -10,11 +10,11 @@ class Enrollment extends Model
     use HasFactory;
 
     protected $primaryKey = 'enrollment_id';
-    protected $fillable = ['student_id', 'module_id', 'enrollment_date'];
+    protected $fillable = ['user_id', 'module_id', 'enrollment_date'];
 
     public function student()
     {
-        return $this->belongsTo(Student::class, 'student_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function module()

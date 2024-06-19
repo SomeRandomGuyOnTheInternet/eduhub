@@ -10,11 +10,11 @@ class Grade extends Model
     use HasFactory;
 
     protected $primaryKey = 'grade_id';
-    protected $fillable = ['student_id', 'assignment_id', 'grade', 'score', 'feedback'];
+    protected $fillable = ['user_id', 'assignment_id', 'grade', 'score', 'feedback'];
 
     public function student()
     {
-        return $this->belongsTo(Student::class, 'student_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function assignment()

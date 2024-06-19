@@ -8,6 +8,7 @@ use App\Models\Enrollment;
 use Filament\Forms;
 use Filament\Forms\Form;
 use App\Models\Student;
+use App\Models\User;
 use App\Models\Module;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -32,9 +33,9 @@ class EnrollmentResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('student_id')
-                    ->label('Student')
-                    ->options(Student::all()->pluck('user.name', 'student_id'))
+                Select::make('user_id')
+                    ->label('User')
+                    ->options(User::all()->pluck('user.name', 'user_id'))
                     ->searchable()
                     ->required(),
                 Select::make('module_id')
