@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 // use App\Http\Controllers\ModuleContentController;
 use App\Http\Controllers\ModuleContentController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +22,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/login', function () {
+        return redirect()->route('login');
+    })->name('filament.auth.login');
+    
+});
+
+
 Route::middleware(['auth', 'professor'])->group(function () {
     Route::get('quizzes/create', [QuizController::class, 'create'])->name('quizzes.create'); // Route to create a quiz
     Route::post('quizzes', [QuizController::class, 'store'])->name('quizzes.store'); // Route to store a new quiz
@@ -32,14 +42,14 @@ Route::middleware(['auth', 'student'])->group(function () {
     Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes'); // Route to display user's quizzes
 });
 
-<<<<<<< Updated upstream
 //Route::get('/modules/{module}/content', 'ModuleContentController@index')->name('modules.content');  // Define routes in your routes/web.php file to handle requests to your content page.
 Route::get('/modules/{module}/module/content',[ModuleContentController::class, 'index'])->name('modules.content'); 
 // Route::get('/emails/{id}', [EmailController::class, 'show'])->name('email.show');  
 
-require __DIR__.'/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.
-=======
-
 // Route::get('/modules/{module}/module/content',[ModuleContentController::class, 'index'])->name('modules.content'); 
 Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
->>>>>>> Stashed changes
+
+
+require __DIR__.'/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.
+
+
