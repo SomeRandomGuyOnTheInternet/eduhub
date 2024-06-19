@@ -10,12 +10,7 @@ class Module extends Model
     use HasFactory;
 
     protected $primaryKey = 'module_id';
-    protected $fillable = ['module_name', 'module_code', 'description', 'credits', 'logo', 'faculty_id'];
-
-    public function faculty()
-    {
-        return $this->belongsTo(Faculty::class, 'faculty_id');
-    }
+    protected $fillable = ['module_name', 'module_code', 'description', 'credits', 'logo'];
 
     public function enrollments()
     {
