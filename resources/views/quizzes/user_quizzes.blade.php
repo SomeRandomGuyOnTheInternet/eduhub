@@ -9,6 +9,11 @@
 <body>
     <div class="container mt-5">
         <h2>Quizzes</h2>
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link active" href="#active" data-toggle="tab">Active</a>
