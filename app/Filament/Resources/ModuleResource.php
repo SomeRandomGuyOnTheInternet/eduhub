@@ -37,11 +37,6 @@ class ModuleResource extends Resource
                 Textarea::make('description'),
                 TextInput::make('credits')->required()->numeric(),
                 TextInput::make('logo'),
-                Select::make('professor_id')
-                    ->label('Professor')
-                    ->options(Professor::all()->pluck('user.name', 'professor_id'))
-                    ->searchable()
-                    ->required(),
                 Select::make('faculty_id')
                     ->relationship('faculty', 'faculty_name')
                     ->required(),

@@ -18,11 +18,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('credits');
             $table->string('logo', 255)->nullable();
-            $table->unsignedBigInteger('professor_id')->nullable();
             $table->unsignedBigInteger('faculty_id');
             $table->timestamps();
 
-            $table->foreign('professor_id')->references('professor_id')->on('professors')->onDelete('set null');
             $table->foreign('faculty_id')->references('faculty_id')->on('faculties')->onDelete('cascade');
         });
     }
