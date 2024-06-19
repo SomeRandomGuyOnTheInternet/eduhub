@@ -1,10 +1,12 @@
 @extends('layouts.base')
 
 @section('content')
-<h2>{{ $moduleName }}</h2>      <!-- this part is just for me to test out if data correctly show. this should be in nav bar(top) template instead -->
+
+<h2>{{ $moduleName }}</h2>
+
 <h1>Contents</h1>
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Folders here, MR TERATOMA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,11 +30,10 @@
             </div>
         </div>
     </nav>
-    
     @if ($moduleContents->isEmpty())
         <p>No contents found for this module folder.</p>
     @else
-        <table class="table">
+    <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
@@ -56,4 +57,5 @@
         </table>
     @endif
 </div>
+
 @endsection
