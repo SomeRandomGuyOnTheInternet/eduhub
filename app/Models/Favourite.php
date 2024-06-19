@@ -11,7 +11,7 @@ class Favourite extends Model
 
     protected $primaryKey = 'favourite_id';
 
-    protected $fillable = ['user_id', 'module_id'];
+    protected $fillable = ['user_id', 'module_id', 'content_id'];
 
     public function user()
     {
@@ -21,5 +21,10 @@ class Favourite extends Model
     public function module()
     {
         return $this->belongsTo(Module::class, 'module_id');
+    }
+
+    public function content()
+    {
+        return $this->belongsTo(ModuleContent::class, 'content_id');
     }
 }
