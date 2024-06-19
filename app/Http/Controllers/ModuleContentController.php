@@ -23,12 +23,6 @@ class ModuleContentController extends Controller
             $moduleName = optional($moduleContents->first()->module)->module_name ?? 'No Module Name';
         }
 
-
-        /* Author Nelson */
-        //fetch news for the module
-        $newsItems = News::where('module_id', 1) // !!! module id to be dynamic in future
-                        ->get();
-
-        return view('content.content_dashboard', compact('moduleContents', 'moduleName','newsItems'));
+        return view('content.content_dashboard', compact('moduleContents', 'moduleName'));
     }
 }

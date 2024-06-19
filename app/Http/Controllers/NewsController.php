@@ -12,6 +12,16 @@ class NewsController extends Controller
     Author: Nelson
     controller for Module News CRUD
     */
+    
+    public function show()
+    {
+        //fetch news for the module
+        $newsItems = News::where('module_id', 1) // !!! module id to be dynamic in future
+                            ->get();
+
+        return view('news.show',compact('newsItems'));
+    }
+
 
     //calls the view form to create a news
     public function create()
@@ -45,6 +55,41 @@ class NewsController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('modules.content', ['moduleFolderId' => $request->module_id])->with('success', 'News created successfully');
+        return redirect()->route('news.show', ['moduleId' => $request->module_id])->with('success', 'News created successfully');
+
+    }
+
+    //fetch the edit view
+    public function edit($news_id)
+    {
+        $newsItem = News::findOrFail($news_id);
+        return view('news.edit', compact('newsItem'));
+    }
+
+    //update the news
+    public function update(Request $request, $news_id)
+    {
+        $request->validate([
+            'news_title' => 'required|string|max:50',
+            'news_description' => 'required|string|max:255',
+        ]);
+
+        
+        $newsItem = News::findOrFail($news_id);
+        $newsItem->update([
+            'news_title' => $request->news_title,
+            'news_description' => $request->news_description,
+            'updated_at' => now()
+        ]);
+
+        return redirect()->route('news.show', ['moduleId' => $newsItem->module_id])->with('success', 'News updated successfully');
+    }
+
+    public function delete($news_id)
+    {
+        $newsItem = News::findOrFail($news_id);
+        $newsItem->delete();
+
+        return redirect()->route('news.show', ['moduleId' => $newsItem->module_id])->with('success', 'News deleted successfully');
     }
 }

@@ -9,5 +9,7 @@ class News extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['module_id','news_title', 'news_description','created_at'];
+    protected $primaryKey = 'news_id';
+    protected $fillable = ['module_id','news_title', 'news_description','created_at','updated_at'];
+    public $timestamps = false;
 }
