@@ -20,21 +20,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route to create a quiz
-Route::get('quizzes/create', [QuizController::class, 'create'])->name('quizzes.create');
+Route::middleware(['auth', 'professor'])->group(function () {
+    Route::get('quizzes/create', [QuizController::class, 'create'])->name('quizzes.create'); // Route to create a quiz
+    Route::post('quizzes', [QuizController::class, 'store'])->name('quizzes.store'); // Route to store a new quiz
 
-// Route to store a new quiz
-Route::post('quizzes', [QuizController::class, 'store'])->name('quizzes.store');
+});
 
-// Route to show a specific quiz
-Route::get('quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show');
-
-// Route to submit a quiz attempt
-Route::post('quizzes/{quiz}/attempt', [QuizController::class, 'attempt'])->name('quizzes.attempt');
-
-// Route to display user's quizzes
-Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes');
-
+Route::middleware(['auth', 'student'])->group(function () {
+    Route::post('quizzes/{quiz}/attempt', [QuizController::class, 'attempt'])->name('quizzes.attempt'); // Route to submit a quiz attempt
+    Route::get('quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show'); // Route to show a specific quiz
+    Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes'); // Route to display user's quizzes
+});
 
 //Route::get('/modules/{module}/content', 'ModuleContentController@index')->name('modules.content');  // Define routes in your routes/web.php file to handle requests to your content page.
 Route::get('/modules/{module}/module/content',[ModuleContentController::class, 'index'])->name('modules.content'); 
