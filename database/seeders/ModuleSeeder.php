@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Module;use Illuminate\Support\Facades\DB;
+use App\Models\Module;
+use Illuminate\Support\Facades\DB;
 
 class ModuleSeeder extends Seeder
 {
@@ -27,7 +27,18 @@ class ModuleSeeder extends Seeder
         ];
 
         foreach ($modules as $module) {
-            DB::table('modules')->insert($module);
+            $moduleId = DB::table('modules')->insertGetId($module);
+
+            $folders = ['Lecture', 'Tutorial', 'Practical'];
+
+            foreach ($folders as $folder) {
+                DB::table('module_folders')->insert([
+                    'folder_name' => $folder,
+                    'module_id' => $moduleId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
     }
 }

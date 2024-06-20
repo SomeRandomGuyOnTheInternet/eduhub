@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             UniversitySeeder::class,
             ModuleSeeder::class,
+            ModuleContentSeeder::class,
             EnrollmentSeeder::class,
+            FavouriteSeeder::class,
+            TeachesSeeder::class,
             AdminSeeder::class,
         ]);
     }
