@@ -21,7 +21,7 @@ return new class extends Migration
             // Define foreign key constraints
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('module_id')->references('module_id')->on('modules')->onDelete('cascade');
-            $table->foreign('content_id')->references('content_id')->on('module_content')->onDelete('cascade');
+            $table->foreign('content_id')->references('content_id')->on('module_contents')->onDelete('cascade');
         });
     }
 

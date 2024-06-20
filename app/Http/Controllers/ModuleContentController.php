@@ -5,6 +5,10 @@ use Illuminate\Http\Request;
 use App\Models\ModuleContent;
 use App\Models\Module;
 use App\Models\News;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class ModuleContentController extends Controller
 {
@@ -23,6 +27,58 @@ class ModuleContentController extends Controller
             $moduleName = optional($moduleContents->first()->module)->module_name ?? 'No Module Name';
         }
 
-        return view('content.content_dashboard', compact('moduleContents', 'moduleName'));
+        if (Auth::user()->role === 'professor') {
+            return view('content.create', compact('moduleFolderId'));
+        }
+
+        $userId = Auth::id();
+        $userType = Auth::user()->user_type;
+
+        if ($userType == 'professor') {
+            // Fetch the module names and IDs for professors
+            $modules = DB::table('modules')
+                ->join('teaches', 'modules.module_id', '=', 'teaches.module_id')
+                ->where('teaches.user_id', $userId)
+                ->select('modules.module_name', 'modules.module_id') // Include module_id in the selection
+                ->get();
+        } elseif ($userType == 'student') {
+            // Fetch the module names and IDs for students
+            $modules = DB::table('modules')
+                ->join('enrollments', 'modules.module_id', '=', 'enrollments.module_id')
+                ->where('enrollments.user_id', $userId)
+                ->select('modules.module_name', 'modules.module_id') // Include module_id in the selection
+                ->get();
+        } else {
+            // If not professor or student, maybe redirect or handle differently
+            $modules = collect(); // Return an empty collection or handle as needed
+        }
+
+        return view('content.content_dashboard', compact('moduleContents', 'modules','moduleName'));
     }
+
+    public function store(Request $request, $moduleFolderId)
+    {
+        $request->validate([
+            'title' => 'required|string|max:100',
+            'description' => 'required|string',
+            'file' => 'required|file|max:10240', // Allows files up to 10MB
+        ]);
+
+        $filePath = $request->file('file')->store('module_contents');
+
+        $content = new ModuleContent([
+            'module_folder_id' => $moduleFolderId,
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'file_path' => $filePath,
+            'upload_date' => now(),
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        $content->save();
+
+        return back()->with('success', 'Content uploaded successfully!');
+    }
+
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\ModuleContentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\navBarController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/news/{moduleId}', [NewsController::class, 'show'])->name('news.show'); //Route to show news
+    Route::get('/modules', [ModuleContentController::class, 'nav_bar'])->name('layouts.left-nav-bar');
     
 });
 
@@ -40,17 +42,31 @@ Route::middleware(['auth', 'professor'])->group(function () {
     Route::get('/news/{newsId}/edit', [NewsController::class, 'edit'])->name('news.edit'); // Route to show the form for editing a news item
     Route::put('/news/{newsId}', [NewsController::class, 'update'])->name('news.update'); // Route to update a news item
     Route::delete('/news/{newsId}', [NewsController::class, 'delete'])->name('news.delete'); // Route to delete a news item
-
-
+    Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+    Route::post('/modules/{moduleFolderId}/content/upload', [ModuleContentController::class, 'store'])->name('modules.content.store')->middleware('auth', 'professor');
 });
 
 Route::middleware(['auth', 'student'])->group(function () {
     Route::post('quizzes/{quiz}/attempt', [QuizController::class, 'attempt'])->name('quizzes.attempt'); // Route to submit a quiz attempt
     Route::get('quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show'); // Route to show a specific quiz
     Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes'); // Route to display user's quizzes
+    Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
 });
 
-Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+// Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+
+Route::get('/modules', [navBarController::class, 'nav_bar'])->name('layouts.left-nav-bar');
+// routes/web.php
+Route::get('/modules/{module_id}/{page}', [navBarController::class, 'showPage'])->name('module.page');
+
+// this is from the nav bar 
+Route::get('/home/{module_id}', [navBarController::class, 'showHome'])->name('module.home');
+Route::get('/content/{module_id}', [navBarController::class, 'showContent'])->name('module.content');
+Route::get('/assignments/{module_id}', [navBarController::class, 'showAssignments'])->name('module.assignments');
+Route::get('/quizzes/{module_id}', [navBarController::class, 'showQuizzes'])->name('module.quizzes');
+Route::get('/news/{module_id}', [navBarController::class, 'showNews'])->name('module.news');
+Route::get('/meetings/{module_id}', [navBarController::class, 'showMeetings'])->name('module.meetings');
+
 
 require __DIR__.'/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.
 
