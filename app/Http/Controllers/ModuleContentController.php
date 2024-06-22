@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ModuleContent;
 use App\Models\Module;
 use App\Models\ModuleFolder;
+use App\Models\Favourite;
 use App\Models\News;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,13 @@ class ModuleContentController extends Controller
         $folders = ModuleFolder::where('module_id', $module_id)->with('contents')->get();
         return view('professor.content.index', compact('module', 'folders'));
     }
+
+    public function showForProfessor($module_id, $content_id)
+{
+    $module = Module::findOrFail($module_id);
+    $content = ModuleContent::findOrFail($content_id);
+    return view('professor.content.show', compact('module', 'content'));
+}
 
     // Method to show form to create a new folder
     public function createFolder($module_id)
@@ -151,6 +159,71 @@ class ModuleContentController extends Controller
             ->with('success', 'Content deleted successfully.');
     }
 
+    public function indexForStudent($module_id)
+    {
+        $module = Module::findOrFail($module_id);
+        $folders = ModuleFolder::where('module_id', $module_id)->with('contents')->get();
+        $favouriteContentIds = Favourite::where('user_id', Auth::id())->pluck('content_id')->toArray();
+        return view('student.content.index', compact('module', 'folders', 'favouriteContentIds'));
+    }
+
+
+    public function toggleFavouriteContent(Request $request, $module_id)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('modules.content.student.index', ['module_id' => $module_id])
+                ->with('error', 'User not authenticated.');
+        }
+
+        foreach ($request->content_ids as $content_id) {
+            $favourite = Favourite::where('user_id', $user->user_id)
+                ->where('content_id', $content_id)
+                ->first();
+
+            if ($favourite) {
+                $favourite->delete();
+            } else {
+                Favourite::create([
+                    'user_id' => $user->user_id,
+                    'content_id' => $content_id,
+                    'module_id' => $module_id
+                ]);
+            }
+        }
+
+        return redirect()->route('modules.content.student.index', ['module_id' => $module_id])
+            ->with('success', 'Content favourite status toggled successfully.');
+    }
+
+
+    public function downloadContent(Request $request)
+    {
+        $zip = new \ZipArchive;
+        $fileName = 'content.zip';
+
+        if ($zip->open(public_path($fileName), \ZipArchive::CREATE) === TRUE) {
+            foreach ($request->content_ids as $content_id) {
+                $content = ModuleContent::find($content_id);
+                $relativeNameInZipFile = basename($content->file_path);
+                $zip->addFile(storage_path('app/' . $content->file_path), $relativeNameInZipFile);
+            }
+            $zip->close();
+        }
+
+        return response()->download(public_path($fileName));
+    }
+
+    public function showForStudent($module_id, $content_id)
+    {
+        $module = Module::findOrFail($module_id);
+        $content = ModuleContent::with('favourites')->findOrFail($content_id);
+        return view('student.content.show', compact('module', 'content'));
+    }
+
+
+
     // public function index($moduleFolderId)
     // {
     //     // Fetch all ModuleContent entries with the given module_folder_id and load the related module
@@ -195,28 +268,28 @@ class ModuleContentController extends Controller
     //     return view('content.content_dashboard', compact('moduleContents', 'modules','moduleName'));
     // }
 
-    public function store(Request $request, $moduleFolderId)
-    {
-        $request->validate([
-            'title' => 'required|string|max:100',
-            'description' => 'required|string',
-            'file' => 'required|file|max:10240', // Allows files up to 10MB
-        ]);
+    // public function store(Request $request, $moduleFolderId)
+    // {
+    //     $request->validate([
+    //         'title' => 'required|string|max:100',
+    //         'description' => 'required|string',
+    //         'file' => 'required|file|max:10240', // Allows files up to 10MB
+    //     ]);
 
-        $filePath = $request->file('file')->store('module_contents');
+    //     $filePath = $request->file('file')->store('module_contents');
 
-        $content = new ModuleContent([
-            'module_folder_id' => $moduleFolderId,
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'file_path' => $filePath,
-            'upload_date' => now(),
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+    //     $content = new ModuleContent([
+    //         'module_folder_id' => $moduleFolderId,
+    //         'title' => $request->input('title'),
+    //         'description' => $request->input('description'),
+    //         'file_path' => $filePath,
+    //         'upload_date' => now(),
+    //         'created_at' => now(),
+    //         'updated_at' => now()
+    //     ]);
 
-        $content->save();
+    //     $content->save();
 
-        return back()->with('success', 'Content uploaded successfully!');
-    }
+    //     return back()->with('success', 'Content uploaded successfully!');
+    // }
 }

@@ -58,6 +58,7 @@ Route::middleware(['auth', 'professor'])->prefix('professor/modules/{module_id}'
     // Content routes
     Route::prefix('content')->name('modules.content.professor.')->group(function () {
         Route::get('/', [ModuleContentController::class, 'indexForProfessor'])->name('index');
+        Route::get('{content_id}', [ModuleContentController::class, 'showForProfessor'])->name('show');
         Route::get('create-folder', [ModuleContentController::class, 'createFolder'])->name('create-folder');
         Route::post('store-folder', [ModuleContentController::class, 'storeFolder'])->name('store-folder');
         Route::get('create-content', [ModuleContentController::class, 'createContent'])->name('create-content');
@@ -89,7 +90,9 @@ Route::middleware(['auth', 'student'])->prefix('student/modules/{module_id}')->g
     // Content routes
     Route::prefix('content')->name('modules.content.student.')->group(function () {
         Route::get('/', [ModuleContentController::class, 'indexForStudent'])->name('index');
-        Route::get('{id}', [ModuleContentController::class, 'showForStudent'])->name('show');
+        Route::get('{content_id}', [ModuleContentController::class, 'showForStudent'])->name('show');
+        Route::post('toggle-favourite', [ModuleContentController::class, 'toggleFavouriteContent'])->name('toggle-favourite');
+        Route::post('download', [ModuleContentController::class, 'downloadContent'])->name('download');
     });
 
     // Quiz routes
