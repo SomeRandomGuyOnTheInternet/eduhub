@@ -20,7 +20,6 @@ class ModuleContentSeeder extends Seeder
             for ($i = 0; $i < 3; $i++) { // Add 3 contents for each folder
                 DB::table('module_contents')->insert([
                     'module_folder_id' => $folder->module_folder_id,
-                    'module_id' => $folder->module_id,
                     'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
                     'description' => $faker->paragraph,
                     'file_path' => $faker->filePath(), // You can use a predefined path if necessary

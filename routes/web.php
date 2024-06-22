@@ -23,14 +23,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/news/{moduleId}', [NewsController::class, 'show'])->name('news.show'); //Route to show news
     Route::get('/modules', [ModuleContentController::class, 'nav_bar'])->name('layouts.left-nav-bar');
-    
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/login', function () {
         return redirect()->route('login');
     })->name('filament.auth.login');
-    
 });
 
 
@@ -60,11 +58,16 @@ Route::middleware(['auth', 'professor'])->prefix('professor/modules/{module_id}'
     // Content routes
     Route::prefix('content')->name('modules.content.professor.')->group(function () {
         Route::get('/', [ModuleContentController::class, 'indexForProfessor'])->name('index');
-        Route::get('create', [ModuleContentController::class, 'createForProfessor'])->name('create');
-        Route::post('/', [ModuleContentController::class, 'storeForProfessor'])->name('store');
-        Route::get('{id}/edit', [ModuleContentController::class, 'editForProfessor'])->name('edit');
-        Route::put('{id}', [ModuleContentController::class, 'updateForProfessor'])->name('update');
-        Route::delete('{id}', [ModuleContentController::class, 'destroyForProfessor'])->name('destroy');
+        Route::get('create-folder', [ModuleContentController::class, 'createFolder'])->name('create-folder');
+        Route::post('store-folder', [ModuleContentController::class, 'storeFolder'])->name('store-folder');
+        Route::get('create-content', [ModuleContentController::class, 'createContent'])->name('create-content');
+        Route::post('store-content', [ModuleContentController::class, 'storeContent'])->name('store-content');
+        Route::get('edit-folder/{folder_id}', [ModuleContentController::class, 'editFolder'])->name('edit-folder');
+        Route::put('update-folder/{folder_id}', [ModuleContentController::class, 'updateFolder'])->name('update-folder');
+        Route::delete('delete-folder/{folder_id}', [ModuleContentController::class, 'destroyFolder'])->name('delete-folder');
+        Route::get('edit-content/{content_id}', [ModuleContentController::class, 'editContent'])->name('edit-content');
+        Route::put('update-content/{content_id}', [ModuleContentController::class, 'updateContent'])->name('update-content');
+        Route::delete('delete-content/{content_id}', [ModuleContentController::class, 'destroyContent'])->name('delete-content');
     });
 
     // Quiz routes
@@ -113,4 +116,4 @@ Route::get('/news/{module_id}', [navBarController::class, 'showNews'])->name('mo
 Route::get('/meetings/{module_id}', [navBarController::class, 'showMeetings'])->name('module.meetings');
 
 
-require __DIR__.'/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.
+require __DIR__ . '/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.
