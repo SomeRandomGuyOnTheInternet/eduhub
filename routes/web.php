@@ -31,7 +31,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     })->name('filament.auth.login');
 });
 
-
 // Route::middleware(['auth', 'professor'])->group(function () {
 //     Route::get('quizzes/create', [QuizController::class, 'create'])->name('quizzes.create'); // Route to create a quiz
 //     Route::post('quizzes', [QuizController::class, 'store'])->name('quizzes.store'); // Route to store a new quiz
