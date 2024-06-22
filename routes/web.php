@@ -34,24 +34,68 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'professor'])->group(function () {
-    Route::get('quizzes/create', [QuizController::class, 'create'])->name('quizzes.create'); // Route to create a quiz
-    Route::post('quizzes', [QuizController::class, 'store'])->name('quizzes.store'); // Route to store a new quiz
-    Route::get('/news/create-news/{moduleId}', [NewsController::class, 'create'])->name('news.create');
-    Route::post('/news/store-news', [NewsController::class, 'store'])->name('news.store'); //Route to store new News
-    Route::get('/news/{newsId}/edit', [NewsController::class, 'edit'])->name('news.edit'); // Route to show the form for editing a news item
-    Route::put('/news/{newsId}', [NewsController::class, 'update'])->name('news.update'); // Route to update a news item
-    Route::delete('/news/{newsId}', [NewsController::class, 'delete'])->name('news.delete'); // Route to delete a news item
-    Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
-    Route::post('/modules/{moduleFolderId}/content/upload', [ModuleContentController::class, 'store'])->name('modules.content.store')->middleware('auth', 'professor');
+// Route::middleware(['auth', 'professor'])->group(function () {
+//     Route::get('quizzes/create', [QuizController::class, 'create'])->name('quizzes.create'); // Route to create a quiz
+//     Route::post('quizzes', [QuizController::class, 'store'])->name('quizzes.store'); // Route to store a new quiz
+//     Route::get('/news/create-news/{moduleId}', [NewsController::class, 'create'])->name('news.create');
+//     Route::post('/news/store-news', [NewsController::class, 'store'])->name('news.store'); //Route to store new News
+//     Route::get('/news/{newsId}/edit', [NewsController::class, 'edit'])->name('news.edit'); // Route to show the form for editing a news item
+//     Route::put('/news/{newsId}', [NewsController::class, 'update'])->name('news.update'); // Route to update a news item
+//     Route::delete('/news/{newsId}', [NewsController::class, 'delete'])->name('news.delete'); // Route to delete a news item
+//     Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+//     Route::post('/modules/{moduleFolderId}/content/upload', [ModuleContentController::class, 'store'])->name('modules.content.store')->middleware('auth', 'professor');
+// });
+
+// Route::middleware(['auth', 'student'])->group(function () {
+//     Route::post('quizzes/{quiz}/attempt', [QuizController::class, 'attempt'])->name('quizzes.attempt'); // Route to submit a quiz attempt
+//     Route::get('quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show'); // Route to show a specific quiz
+//     Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes'); // Route to display user's quizzes
+//     Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+// });
+
+// Grouping routes for modules with professor role-based access
+Route::middleware(['auth', 'professor'])->prefix('professor/modules/{module_id}')->group(function () {
+    //Route::get('dashboard', [ModuleController::class, 'dashboard'])->name('modules.dashboard.professor');
+
+    // Content routes
+    Route::prefix('content')->name('modules.content.professor.')->group(function () {
+        Route::get('/', [ModuleContentController::class, 'indexForProfessor'])->name('index');
+        Route::get('create', [ModuleContentController::class, 'createForProfessor'])->name('create');
+        Route::post('/', [ModuleContentController::class, 'storeForProfessor'])->name('store');
+        Route::get('{id}/edit', [ModuleContentController::class, 'editForProfessor'])->name('edit');
+        Route::put('{id}', [ModuleContentController::class, 'updateForProfessor'])->name('update');
+        Route::delete('{id}', [ModuleContentController::class, 'destroyForProfessor'])->name('destroy');
+    });
+
+    // Quiz routes
+    Route::prefix('quizzes')->name('modules.quizzes.professor.')->group(function () {
+        Route::get('/', [QuizController::class, 'indexForProfessor'])->name('index');
+        Route::get('create', [QuizController::class, 'createForProfessor'])->name('create');
+        Route::post('/', [QuizController::class, 'storeForProfessor'])->name('store');
+        Route::get('{id}', [QuizController::class, 'showForProfessor'])->name('show');
+        Route::get('{id}/edit', [QuizController::class, 'editForProfessor'])->name('edit');
+        Route::put('{id}', [QuizController::class, 'updateForProfessor'])->name('update');
+        Route::delete('{id}', [QuizController::class, 'destroyForProfessor'])->name('destroy');
+    });
 });
 
-Route::middleware(['auth', 'student'])->group(function () {
-    Route::post('quizzes/{quiz}/attempt', [QuizController::class, 'attempt'])->name('quizzes.attempt'); // Route to submit a quiz attempt
-    Route::get('quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show'); // Route to show a specific quiz
-    Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes'); // Route to display user's quizzes
-    Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+// Grouping routes for modules with student role-based access
+Route::middleware(['auth', 'student'])->prefix('student/modules/{module_id}')->group(function () {
+    //Route::get('dashboard', [ModuleController::class, 'dashboard'])->name('modules.dashboard.student');
+
+    // Content routes
+    Route::prefix('content')->name('modules.content.student.')->group(function () {
+        Route::get('/', [ModuleContentController::class, 'indexForStudent'])->name('index');
+        Route::get('{id}', [ModuleContentController::class, 'showForStudent'])->name('show');
+    });
+
+    // Quiz routes
+    Route::prefix('quizzes')->name('modules.quizzes.student.')->group(function () {
+        Route::get('/', [QuizController::class, 'indexForStudent'])->name('index');
+        Route::get('{id}', [QuizController::class, 'showForStudent'])->name('show');
+    });
 });
+
 
 // Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
 
