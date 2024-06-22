@@ -14,12 +14,13 @@ class ModuleContentSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $folderIds = DB::table('module_folders')->pluck('module_folder_id');
+        $folders = DB::table('module_folders')->get(['module_folder_id', 'module_id']);
 
-        foreach ($folderIds as $folderId) {
+        foreach ($folders as $folder) {
             for ($i = 0; $i < 3; $i++) { // Add 3 contents for each folder
                 DB::table('module_contents')->insert([
-                    'module_folder_id' => $folderId,
+                    'module_folder_id' => $folder->module_folder_id,
+                    'module_id' => $folder->module_id,
                     'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
                     'description' => $faker->paragraph,
                     'file_path' => $faker->filePath(), // You can use a predefined path if necessary
