@@ -93,6 +93,7 @@ Route::middleware(['auth', 'student'])->prefix('student/modules/{module_id}')->g
     Route::prefix('quizzes')->name('modules.quizzes.student.')->group(function () {
         Route::get('/', [QuizController::class, 'indexForStudent'])->name('index');
         Route::get('{id}', [QuizController::class, 'showForStudent'])->name('show');
+        Route::post('{id}/attempt', [QuizController::class, 'attempt'])->name('attempt');
     });
 });
 
@@ -113,5 +114,3 @@ Route::get('/meetings/{module_id}', [navBarController::class, 'showMeetings'])->
 
 
 require __DIR__.'/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.
-
-
