@@ -145,27 +145,34 @@ class QuizController extends Controller
         $module = Module::findOrFail($module_id);
         $quizzes = Quiz::where('module_id', $module_id)->get();
         $completedQuizzes = QuizAttempt::where('user_id', Auth::id())
-            ->whereHas('quiz', function($query) use ($module_id) {
+            ->whereHas('quiz', function ($query) use ($module_id) {
                 $query->where('module_id', $module_id);
             })
             ->with('quiz')
             ->orderBy('created_at', 'desc')
             ->get();
-    
+
         foreach ($completedQuizzes as $attempt) {
             $totalMarks = $this->calculateTotalMarks($attempt->quiz_id);
             $attempt->score = $attempt->total_marks . '/' . $totalMarks;
             $attempt->grade = $this->calculateGrade(($attempt->total_marks / $totalMarks) * 100);
         }
-    
+
         return view('student.quizzes.index', compact('module', 'quizzes', 'completedQuizzes'));
     }
-    
+
+    public function showForStudent($module_id, $id)
+    {
+        $module = Module::findOrFail($module_id);
+        $quiz = Quiz::with('questions')->where('quiz_id', $id)->where('module_id', $module_id)->firstOrFail();
+        return view('student.quizzes.show', compact('quiz', 'module'));
+    }
+
     private function calculateTotalMarks($quiz_id)
     {
         return QuizQuestion::where('quiz_id', $quiz_id)->sum('marks');
     }
-    
+
     private function calculateGrade($percentage)
     {
         if ($percentage >= 85) {
@@ -192,169 +199,42 @@ class QuizController extends Controller
             return 'F';
         }
     }
-    
-
-    public function showForStudent($module_id, $id)
-    {
-        $module = Module::findOrFail($module_id);
-        $quiz = Quiz::with('questions')->where('quiz_id', $id)->where('module_id', $module_id)->firstOrFail();
-        return view('student.quizzes.show', compact('quiz', 'module'));
-    }
 
     public function attempt(Request $request, $module_id, $id)
-{
-    $request->validate([
-        'answers.*' => 'required',
-    ]);
-
-    $user = Auth::user();
-    $quiz = Quiz::where('quiz_id', $id)->where('module_id', $module_id)->firstOrFail();
-
-    $totalMarks = 0;
-
-    $quizAttempt = QuizAttempt::create([
-        'quiz_id' => $quiz->quiz_id,
-        'user_id' => $user->user_id,
-        'total_marks' => 0,
-    ]);
-
-    foreach ($quiz->questions as $index => $question) {
-        $submittedAnswer = $request->answers[$index];
-        $correctAnswer = $question->correct_option;
-
-        $isCorrect = $submittedAnswer === $correctAnswer;
-        $marksObtained = $isCorrect ? $question->marks : 0;
-        $totalMarks += $marksObtained;
-
-        QuizSubmission::create([
-            'quiz_questions_id' => $question->quiz_questions_id,
-            'user_id' => $user->user_id,
-            'submission_answer' => $submittedAnswer,
-        ]);
-    }
-
-    $quizAttempt->update(['total_marks' => $totalMarks]);
-
-    return redirect()->route('modules.quizzes.student.index', ['module_id' => $module_id])
-        ->with('success', 'Quiz submitted successfully!');
-}
-
-    // public function create()
-    // {
-    //     return view('quizzes.create');
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         $request->validate([
-    //             'module_id' => 'required',
-    //             'title' => 'required',
-    //             'description' => 'required',
-    //             'date' => 'required|date',
-    //             'questions.*' => 'required',
-    //             'options.*.*' => 'required',
-    //             'correct_options.*' => 'required',
-    //             'marks.*' => 'required|integer',
-    //         ]);
-
-    //         $quiz = Quiz::create([
-    //             'module_id' => $request->module_id,
-    //             'quiz_title' => $request->title,
-    //             'quiz_description' => $request->description,
-    //             'quiz_date' => $request->date,
-    //         ]);
-
-    //         foreach ($request->questions as $index => $question) {
-    //             QuizQuestion::create([
-    //                 'quiz_id' => $quiz->quiz_id,
-    //                 'question' => $question,
-    //                 'option_a' => $request->options[$index][0],
-    //                 'option_b' => $request->options[$index][1],
-    //                 'option_c' => $request->options[$index][2],
-    //                 'option_d' => $request->options[$index][3],
-    //                 'correct_option' => substr($request->correct_options[$index], -1), // Ensure it's a single character
-    //                 'marks' => $request->marks[$index],
-    //             ]);
-    //         }
-
-    //         return redirect()->route('quizzes.create')->with('success', 'Quiz created successfully.');
-
-    //     } catch (\Exception $e) {
-    //         return redirect()->route('quizzes.create')->with('error', $e->getMessage())->setStatusCode(500);
-    //     }
-    // }
-
-    // public function show(Quiz $quiz)
-    // {
-    //     try {
-    //         $questions = $quiz->questions;
-    //         return response()->view('quizzes.show', compact('quiz', 'questions'), 200);
-
-    //     } catch (\Exception $e) {
-    //         return response()->view('quizzes.show', ['error' => 'Quiz not found.'], 404);
-    //     }
-    // }
-
-    // public function attempt(Request $request, Quiz $quiz)
-    // {
-    //     try {
-    //         $request->validate([
-    //             'answers.*' => 'required',
-    //         ]);
-
-    //         $user = Auth::user();
-    //         if (!$user) {
-    //             return redirect()->route('quizzes.show', $quiz)->with('error', 'User not authenticated.')->setStatusCode(401);
-    //         }
-
-    //         $totalMarks = 0;
-
-    //         $quizAttempt = QuizAttempt::create([
-    //             'quiz_id' => $quiz->quiz_id,
-    //             'user_id' => $user->id,
-    //             'total_marks' => 0,
-    //         ]);
-
-    //         foreach ($quiz->questions as $index => $question) {
-    //             $submittedAnswer = $request->answers[$index];
-    //             $correctAnswer = $question->correct_option;
-
-    //             $isCorrect = $submittedAnswer === $correctAnswer;
-    //             $marksObtained = $isCorrect ? $question->marks : 0;
-    //             $totalMarks += $marksObtained;
-
-    //             QuizSubmission::create([
-    //                 'quiz_questions_id' => $question->quiz_questions_id,
-    //                 'user_id' => $user->id,
-    //                 'submission_answer' => $submittedAnswer,
-    //             ]);
-    //         }
-
-    //         $quizAttempt->update(['total_marks' => $totalMarks]);
-
-    //         return redirect()->route('quizzes.show', $quiz)->with('success', 'Quiz submitted successfully!')->setStatusCode(200);
-    //     } catch (\Exception $e) {
-    //         return redirect()->route('quizzes.show', $quiz)->with('error', $e->getMessage())->setStatusCode(500);
-    //     }
-    // }
-
-    public function userQuizzes()
     {
-        try {
-            $user = Auth::user();
-            if (!$user) {
-                return redirect()->route('user.quizzes')->with('error', 'User not authenticated.')->setStatusCode(401);
-            }
+        $request->validate([
+            'answers.*' => 'required',
+        ]);
 
-            // Fetching the quizzes attempted by the user
-            $quizAttempts = QuizAttempt::with('quiz')
-                ->where('user_id', $user->id)
-                ->get();
+        $user = Auth::user();
+        $quiz = Quiz::where('quiz_id', $id)->where('module_id', $module_id)->firstOrFail();
 
-            return response()->view('quizzes.user_quizzes', compact('quizAttempts'), 200);
-        } catch (\Exception $e) {
-            return response()->view('quizzes.user_quizzes', ['error' => $e->getMessage()], 500);
+        $totalMarks = 0;
+
+        $quizAttempt = QuizAttempt::create([
+            'quiz_id' => $quiz->quiz_id,
+            'user_id' => $user->user_id,
+            'total_marks' => 0,
+        ]);
+
+        foreach ($quiz->questions as $index => $question) {
+            $submittedAnswer = $request->answers[$index];
+            $correctAnswer = $question->correct_option;
+
+            $isCorrect = $submittedAnswer === $correctAnswer;
+            $marksObtained = $isCorrect ? $question->marks : 0;
+            $totalMarks += $marksObtained;
+
+            QuizSubmission::create([
+                'quiz_questions_id' => $question->quiz_questions_id,
+                'user_id' => $user->user_id,
+                'submission_answer' => $submittedAnswer,
+            ]);
         }
+
+        $quizAttempt->update(['total_marks' => $totalMarks]);
+
+        return redirect()->route('modules.quizzes.student.index', ['module_id' => $module_id])
+            ->with('success', 'Quiz submitted successfully!');
     }
 }
