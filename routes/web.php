@@ -23,35 +23,83 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/news/{moduleId}', [NewsController::class, 'show'])->name('news.show'); //Route to show news
     Route::get('/modules', [ModuleContentController::class, 'nav_bar'])->name('layouts.left-nav-bar');
-    
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/login', function () {
         return redirect()->route('login');
     })->name('filament.auth.login');
-    
 });
 
 
-Route::middleware(['auth', 'professor'])->group(function () {
-    Route::get('quizzes/create', [QuizController::class, 'create'])->name('quizzes.create'); // Route to create a quiz
-    Route::post('quizzes', [QuizController::class, 'store'])->name('quizzes.store'); // Route to store a new quiz
-    Route::get('/news/create-news/{moduleId}', [NewsController::class, 'create'])->name('news.create');
-    Route::post('/news/store-news', [NewsController::class, 'store'])->name('news.store'); //Route to store new News
-    Route::get('/news/{newsId}/edit', [NewsController::class, 'edit'])->name('news.edit'); // Route to show the form for editing a news item
-    Route::put('/news/{newsId}', [NewsController::class, 'update'])->name('news.update'); // Route to update a news item
-    Route::delete('/news/{newsId}', [NewsController::class, 'delete'])->name('news.delete'); // Route to delete a news item
-    Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
-    Route::post('/modules/{moduleFolderId}/content/upload', [ModuleContentController::class, 'store'])->name('modules.content.store')->middleware('auth', 'professor');
+// Route::middleware(['auth', 'professor'])->group(function () {
+//     Route::get('quizzes/create', [QuizController::class, 'create'])->name('quizzes.create'); // Route to create a quiz
+//     Route::post('quizzes', [QuizController::class, 'store'])->name('quizzes.store'); // Route to store a new quiz
+//     Route::get('/news/create-news/{moduleId}', [NewsController::class, 'create'])->name('news.create');
+//     Route::post('/news/store-news', [NewsController::class, 'store'])->name('news.store'); //Route to store new News
+//     Route::get('/news/{newsId}/edit', [NewsController::class, 'edit'])->name('news.edit'); // Route to show the form for editing a news item
+//     Route::put('/news/{newsId}', [NewsController::class, 'update'])->name('news.update'); // Route to update a news item
+//     Route::delete('/news/{newsId}', [NewsController::class, 'delete'])->name('news.delete'); // Route to delete a news item
+//     Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+//     Route::post('/modules/{moduleFolderId}/content/upload', [ModuleContentController::class, 'store'])->name('modules.content.store')->middleware('auth', 'professor');
+// });
+
+// Route::middleware(['auth', 'student'])->group(function () {
+//     Route::post('quizzes/{quiz}/attempt', [QuizController::class, 'attempt'])->name('quizzes.attempt'); // Route to submit a quiz attempt
+//     Route::get('quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show'); // Route to show a specific quiz
+//     Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes'); // Route to display user's quizzes
+//     Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+// });
+
+// Grouping routes for modules with professor role-based access
+Route::middleware(['auth', 'professor'])->prefix('professor/modules/{module_id}')->group(function () {
+    //Route::get('dashboard', [ModuleController::class, 'dashboard'])->name('modules.dashboard.professor');
+
+    // Content routes
+    Route::prefix('content')->name('modules.content.professor.')->group(function () {
+        Route::get('/', [ModuleContentController::class, 'indexForProfessor'])->name('index');
+        Route::get('create-folder', [ModuleContentController::class, 'createFolder'])->name('create-folder');
+        Route::post('store-folder', [ModuleContentController::class, 'storeFolder'])->name('store-folder');
+        Route::get('create-content', [ModuleContentController::class, 'createContent'])->name('create-content');
+        Route::post('store-content', [ModuleContentController::class, 'storeContent'])->name('store-content');
+        Route::get('edit-folder/{folder_id}', [ModuleContentController::class, 'editFolder'])->name('edit-folder');
+        Route::put('update-folder/{folder_id}', [ModuleContentController::class, 'updateFolder'])->name('update-folder');
+        Route::delete('delete-folder/{folder_id}', [ModuleContentController::class, 'destroyFolder'])->name('delete-folder');
+        Route::get('edit-content/{content_id}', [ModuleContentController::class, 'editContent'])->name('edit-content');
+        Route::put('update-content/{content_id}', [ModuleContentController::class, 'updateContent'])->name('update-content');
+        Route::delete('delete-content/{content_id}', [ModuleContentController::class, 'destroyContent'])->name('delete-content');
+    });
+
+    // Quiz routes
+    Route::prefix('quizzes')->name('modules.quizzes.professor.')->group(function () {
+        Route::get('/', [QuizController::class, 'indexForProfessor'])->name('index');
+        Route::get('create', [QuizController::class, 'createForProfessor'])->name('create');
+        Route::post('/', [QuizController::class, 'storeForProfessor'])->name('store');
+        Route::get('{id}', [QuizController::class, 'showForProfessor'])->name('show');
+        Route::get('{id}/edit', [QuizController::class, 'editForProfessor'])->name('edit');
+        Route::put('{id}', [QuizController::class, 'updateForProfessor'])->name('update');
+        Route::delete('{id}', [QuizController::class, 'destroyForProfessor'])->name('destroy');
+    });
 });
 
-Route::middleware(['auth', 'student'])->group(function () {
-    Route::post('quizzes/{quiz}/attempt', [QuizController::class, 'attempt'])->name('quizzes.attempt'); // Route to submit a quiz attempt
-    Route::get('quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show'); // Route to show a specific quiz
-    Route::get('user/quizzes', [QuizController::class, 'userQuizzes'])->name('user.quizzes'); // Route to display user's quizzes
-    Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
+// Grouping routes for modules with student role-based access
+Route::middleware(['auth', 'student'])->prefix('student/modules/{module_id}')->group(function () {
+    //Route::get('dashboard', [ModuleController::class, 'dashboard'])->name('modules.dashboard.student');
+
+    // Content routes
+    Route::prefix('content')->name('modules.content.student.')->group(function () {
+        Route::get('/', [ModuleContentController::class, 'indexForStudent'])->name('index');
+        Route::get('{id}', [ModuleContentController::class, 'showForStudent'])->name('show');
+    });
+
+    // Quiz routes
+    Route::prefix('quizzes')->name('modules.quizzes.student.')->group(function () {
+        Route::get('/', [QuizController::class, 'indexForStudent'])->name('index');
+        Route::get('{id}', [QuizController::class, 'showForStudent'])->name('show');
+        Route::post('{id}/attempt', [QuizController::class, 'attempt'])->name('attempt');
+    });
 });
+
 
 // Route::get('/modules/{moduleFolderId}/content', [ModuleContentController::class, 'index'])->name('modules.content');
 
@@ -68,6 +116,4 @@ Route::get('/news/{module_id}', [navBarController::class, 'showNews'])->name('mo
 Route::get('/meetings/{module_id}', [navBarController::class, 'showMeetings'])->name('module.meetings');
 
 
-require __DIR__.'/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.
-
-
+require __DIR__ . '/auth.php'; // Include the routes defined in the routes/auth.php file for authentication related routes.

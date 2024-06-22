@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Quiz</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
     <div class="container mt-5">
         <h2>Create Quiz</h2>
@@ -19,12 +21,18 @@
                 {{ session('error') }}
             </div>
         @endif
-        <form action="{{ route('quizzes.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="module_id">Module ID</label>
-                <input type="number" class="form-control" id="module_id" name="module_id" required>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
+        @endif
+        <form action="{{ route('modules.quizzes.professor.store', ['module_id' => $module_id]) }}" method="POST">
+            @csrf
+            <input type="hidden" name="module_id" value="{{ $module_id }}">
             <div class="form-group">
                 <label for="title">Title*</label>
                 <input type="text" class="form-control" id="title" name="title" required>
@@ -34,8 +42,8 @@
                 <textarea class="form-control" id="description" name="description" required></textarea>
             </div>
             <div class="form-group">
-                <label for="date">Date*</label>
-                <input type="date" class="form-control" id="date" name="date" required>
+                <label for="datetime">Date and Time*</label>
+                <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
             </div>
 
             <div id="questions-container">
@@ -69,10 +77,11 @@
             <button type="button" class="btn btn-primary" id="addQuestionBtn">Add New Question</button>
             <button type="submit" class="btn btn-success">Publish Quiz</button>
         </form>
+
     </div>
 
     <script>
-        document.getElementById('addQuestionBtn').addEventListener('click', function() {
+        document.getElementById('addQuestionBtn').addEventListener('click', function () {
             const questionsContainer = document.getElementById('questions-container');
             const questionCount = document.querySelectorAll('.question-group').length;
             const newQuestion = document.createElement('div');
@@ -108,4 +117,5 @@
         });
     </script>
 </body>
+
 </html>

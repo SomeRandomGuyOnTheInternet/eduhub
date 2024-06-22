@@ -13,8 +13,10 @@ class ModuleContent extends Model
     // protected $fillable = ['module_folder_id', 'title', 'description', 'file_path'];
     protected $fillable = ['module_folder_id', 'title', 'description', 'file_path'];
 
-    public function module()
+    public function moduleFolder()
     {
-        return $this->belongsTo(Module::class, 'module_folder_id');
+        return $this->belongsTo(ModuleFolder::class, 'module_folder_id');
     }
+
+
 }
