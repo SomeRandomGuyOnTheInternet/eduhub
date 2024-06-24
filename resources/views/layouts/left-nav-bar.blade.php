@@ -22,7 +22,13 @@
                             <a href="{{ route('modules.quizzes.student.index', ['module_id' => $module->module_id]) }}">Quizzes</a>
                         @endif
                     </li>
-                    <li><a href="{{ url('news/'.$module->module_id) }}">News</a></li>
+                    <li>
+                        @if(Auth::user()->user_type == 'professor')
+                            <a href="{{ route('modules.news.professor.index', ['module_id' => $module->module_id]) }}">News</a>
+                        @elseif(Auth::user()->user_type == 'student')
+                            <a href="{{ route('modules.news.student.index', ['module_id' => $module->module_id]) }}">News</a>
+                        @endif
+                    </li>
                     <li><a href="{{ url('meetings/'.$module->module_id) }}">Meetings</a></li>
                 </ul>
             </li>

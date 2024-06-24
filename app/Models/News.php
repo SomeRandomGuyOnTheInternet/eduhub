@@ -12,4 +12,8 @@ class News extends Model
     protected $primaryKey = 'news_id';
     protected $fillable = ['module_id','news_title', 'news_description','created_at','updated_at'];
     public $timestamps = false;
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }

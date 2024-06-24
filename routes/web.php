@@ -63,6 +63,17 @@ Route::middleware(['auth', 'professor'])->prefix('professor/modules/{module_id}'
         Route::put('{id}', [QuizController::class, 'updateForProfessor'])->name('update');
         Route::delete('{id}', [QuizController::class, 'destroyForProfessor'])->name('destroy');
     });
+
+    // News routes
+    Route::prefix('news')->name('modules.news.professor.')->group(function () {
+        Route::get('/', [NewsController::class, 'indexForProfessor'])->name('index');
+        Route::get('create', [NewsController::class, 'createForProfessor'])->name('create');
+        Route::post('/', [NewsController::class, 'storeForProfessor'])->name('store');
+        Route::get('{news_id}', [NewsController::class, 'showForProfessor'])->name('show');
+        Route::get('{news_id}/edit', [NewsController::class, 'editForProfessor'])->name('edit');
+        Route::put('{news_id}', [NewsController::class, 'updateForProfessor'])->name('update');
+        Route::delete('{news_id}', [NewsController::class, 'destroyForProfessor'])->name('destroy');
+    });
 });
 
 // Grouping routes for modules with student role-based access
@@ -82,6 +93,12 @@ Route::middleware(['auth', 'student'])->prefix('student/modules/{module_id}')->g
         Route::get('/', [QuizController::class, 'indexForStudent'])->name('index');
         Route::get('{id}', [QuizController::class, 'showForStudent'])->name('show');
         Route::post('{id}/attempt', [QuizController::class, 'attempt'])->name('attempt');
+    });
+
+    // News routes
+    Route::prefix('news')->name('modules.news.student.')->group(function () {
+        Route::get('/', [NewsController::class, 'indexForStudent'])->name('index');
+        Route::get('{news_id}', [NewsController::class, 'showForStudent'])->name('show');
     });
 });
 
