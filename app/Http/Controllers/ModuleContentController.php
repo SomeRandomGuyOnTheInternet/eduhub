@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
+use App\Models\Module;
+use App\Models\Favourite;
+use App\Models\ModuleFolder;
 use Illuminate\Http\Request;
 use App\Models\ModuleContent;
-use App\Models\Module;
-use App\Models\ModuleFolder;
-use App\Models\Favourite;
-use App\Models\News;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class ModuleContentController extends Controller
@@ -23,15 +24,16 @@ class ModuleContentController extends Controller
     }
 
     public function showForProfessor($module_id, $content_id)
-{
-    $module = Module::findOrFail($module_id);
-    $content = ModuleContent::findOrFail($content_id);
-    return view('professor.content.show', compact('module', 'content'));
-}
+    {
+        $module = Module::findOrFail($module_id);
+        $content = ModuleContent::findOrFail($content_id);
+        return view('professor.content.show', compact('module', 'content'));
+    }
 
     // Method to show form to create a new folder
     public function createFolder($module_id)
     {
+        Log::info("Creating folder for module: $module_id");
         $module = Module::findOrFail($module_id);
         return view('professor.content.create_folder', compact('module'));
     }
@@ -55,6 +57,7 @@ class ModuleContentController extends Controller
     // Method to show form to create new content
     public function createContent($module_id)
     {
+        Log::info("Creating content for module: $module_id");
         $module = Module::findOrFail($module_id);
         $folders = ModuleFolder::where('module_id', $module_id)->get();
         return view('professor.content.create_content', compact('module', 'folders'));

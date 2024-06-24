@@ -53,6 +53,8 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <a href="{{ route('modules.content.professor.edit-folder', ['module_id' => $module->module_id, 'folder_id' => $folder->module_folder_id]) }}"
+                            class="btn btn-warning btn-sm">Edit Folder</a>
                         <form
                             action="{{ route('modules.content.professor.delete-folder', ['module_id' => $module->module_id, 'folder_id' => $folder->module_folder_id]) }}"
                             method="POST" style="display:inline;">
@@ -64,6 +66,8 @@
                 </div>
             @endforeach
         </div>
+        <a href="{{ route('modules.content.professor.create-folder', ['module_id' => $module->module_id]) }}" class="btn btn-success">Add Folder</a>
+        <a href="{{ route('modules.content.professor.create-content', ['module_id' => $module->module_id]) }}" class="btn btn-primary">Add Content</a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
