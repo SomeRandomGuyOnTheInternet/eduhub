@@ -150,12 +150,12 @@ class QuizController extends Controller
 
 
     // Delete a quiz for the professor.
-    public function destroyForProfessor($module, $id)
+    public function destroyForProfessor($module_id, $id)
     {
-        $quiz = Quiz::where('module', $module)->findOrFail($id); // Finds the quiz by its module and ID, or fails with a 404 error if not found.
+        $quiz = Quiz::where('module_id', $module_id)->findOrFail($id); // Finds the quiz by its module and ID, or fails with a 404 error if not found.
         $quiz->delete(); // Deletes the quiz.
 
-        return redirect()->route('modules.quizzes.professor.index', ['module' => $module])
+        return redirect()->route('modules.quizzes.professor.index', ['module_id' => $module_id])
             ->with('success', 'Quiz deleted successfully.'); // Redirects to the quizzes index with a success message.
     }
 
