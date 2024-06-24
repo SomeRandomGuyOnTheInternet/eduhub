@@ -43,4 +43,9 @@ class ModuleController extends Controller
     // }
 
     // // Additional methods for creating, editing, updating, and deleting modules can be added here
+    public function index()
+    {
+        $modules = Module::all();
+        return view('home', compact('modules'));
+    }
 }

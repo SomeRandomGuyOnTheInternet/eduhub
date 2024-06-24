@@ -16,7 +16,7 @@ class Teaches extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
+    
     public function module()
     {
         return $this->belongsTo(Module::class, 'module_id');

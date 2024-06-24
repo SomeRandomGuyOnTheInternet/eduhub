@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -22,24 +23,9 @@ class User extends Authenticatable
         $this->attributes['password'] = Hash::make($value);
     }
 
-    public function student()
-    {
-        return $this->hasOne(Student::class, 'user_id');
-    }
-
-    public function professor()
-    {
-        return $this->hasOne(Professor::class, 'user_id');
-    }
-
     public function administrator()
     {
         return $this->hasOne(Administrator::class, 'user_id');
-    }
-
-    public function discussions()
-    {
-        return $this->hasMany(Discussion::class, 'user_id');
     }
 
     public function getNameAttribute()
@@ -50,5 +36,15 @@ class User extends Authenticatable
     public static function getUsersByType($type)
     {
         return self::where('user_type', $type)->get()->pluck('name', 'user_id');
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class, 'user_id');
+    }
+    
+    public function teaches()
+    {
+        return $this->hasMany(Teaches::class, 'user_id');
     }
 }

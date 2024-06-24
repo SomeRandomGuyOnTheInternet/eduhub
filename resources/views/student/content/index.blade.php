@@ -1,28 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .nav-tabs .nav-item.show .nav-link,
-        .nav-tabs .nav-link.active {
-            color: #495057;
-            background-color: #fff;
-            border-color: #dee2e6 #dee2e6 #fff;
-        }
+@section('title', 'Learning Content')
 
-        .nav-tabs .nav-link {
-            border: 1px solid #dee2e6;
-        }
-
-        .favourite-icon {
-            color: red;
-        }
-    </style>
-</head>
+@section('content')
 
 <body>
     <div class="container mt-5">
@@ -112,3 +92,4 @@
 </body>
 
 </html>
+@endsection

@@ -12,11 +12,6 @@ class Module extends Model
     protected $primaryKey = 'module_id';
     protected $fillable = ['module_name', 'module_code', 'description', 'credits', 'logo'];
 
-    public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class, 'module_id');
-    }
-
     public function assignments()
     {
         return $this->hasMany(Assignment::class, 'module_id');
@@ -30,6 +25,16 @@ class Module extends Model
     public function moduleContents()
     {
         return $this->hasMany(ModuleContent::class, 'module_id');
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class, 'module_id');
+    }
+    
+    public function teaches()
+    {
+        return $this->hasMany(Teaches::class, 'module_id');
     }
 
 }
