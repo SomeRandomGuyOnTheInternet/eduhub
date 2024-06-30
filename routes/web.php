@@ -4,11 +4,13 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\ModuleContentController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\NewsController;
 
 Route::get('/', function () {
+    if (Auth::check() && Auth::user()->user_type === 'admin') {
+        
+    }
     return view('welcome');
 });
 
@@ -40,8 +42,6 @@ Route::middleware(['auth', 'professor'])->group(function () {
     Route::get('/news/{newsId}/edit', [NewsController::class, 'edit'])->name('news.edit'); // Route to show the form for editing a news item
     Route::put('/news/{newsId}', [NewsController::class, 'update'])->name('news.update'); // Route to update a news item
     Route::delete('/news/{newsId}', [NewsController::class, 'delete'])->name('news.delete'); // Route to delete a news item
-
-
 });
 
 Route::middleware(['auth', 'student'])->group(function () {
