@@ -12,7 +12,7 @@ Route::get('/', function () {
     if (Auth::check() && Auth::user()->user_type === 'admin') {
         
     }
-    return view('welcome');
+    return view('layouts.app');
 });
 
 Route::get('/dashboard', function () {

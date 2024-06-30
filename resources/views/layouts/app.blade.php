@@ -68,7 +68,7 @@
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         @include('layouts.left-nav-bar') <!-- Custom navigation bar -->
 
-        @include('layouts.navigation') <!-- Breeze navigation -->
+        {{-- @include('layouts.navigation') <!-- Breeze navigation --> --}}
 
         <!-- Page Heading -->
         @isset($header)

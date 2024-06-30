@@ -1,7 +1,7 @@
 <div class="nav-bar">
     <h2>This is the left nav bar bro</h2>
     <h2>Modules:</h2>
-    <ul>
+    {{-- <ul>
         @foreach($modules as $module)
             <li>
                 <a href="javascript:void(0)" onclick="toggleSubMenu('{{ $module->module_name }}')">{{ $module->module_name }}</a>
@@ -33,7 +33,7 @@
                 </ul>
             </li>
         @endforeach
-    </ul>
+    </ul> --}}
 </div>
 
 <script>
