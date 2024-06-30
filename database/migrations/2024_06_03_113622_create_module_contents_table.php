@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('file_path', 255)->nullable();
             $table->timestamp('upload_date')->useCurrent();
-            $table->boolean('visited')->default(false);
             $table->timestamps();
 
             $table->foreign('module_folder_id')->references('module_folder_id')->on('module_folders')->onDelete('cascade');

@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('discussion_replies', function (Blueprint $table) {
-            $table->bigIncrements('discussion_replies_id');
-            $table->unsignedBigInteger('discussion_id');
+        Schema::create('teaches', function (Blueprint $table) {
+            $table->id('teaches_id');
             $table->unsignedBigInteger('user_id');
-            $table->text('reply');
+            $table->unsignedBigInteger('module_id');
             $table->timestamps();
 
-            $table->foreign('discussion_id')->references('discussion_id')->on('discussions')->onDelete('cascade');
+            // Define foreign key constraints
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('module_id')->references('module_id')->on('modules')->onDelete('cascade');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('discussion_replies');
+        Schema::dropIfExists('teaches');
     }
 };

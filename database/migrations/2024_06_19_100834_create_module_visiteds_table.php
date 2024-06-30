@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('professors', function (Blueprint $table) {
-            $table->bigIncrements('professor_id');
+        Schema::create('module_visited', function (Blueprint $table) {
+            $table->id('module_visited_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('faculty_id')->nullable();
+            $table->unsignedBigInteger('content_id');
+            $table->unsignedBigInteger('module_id');
             $table->timestamps();
 
+            // Define foreign key constraints
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('faculty_id')->references('faculty_id')->on('faculties')->onDelete('set null');
+            $table->foreign('content_id')->references('content_id')->on('module_contents')->onDelete('cascade');
+            $table->foreign('module_id')->references('module_id')->on('modules')->onDelete('cascade');
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('professors');
+        Schema::dropIfExists('module_visiteds');
     }
 };

@@ -10,22 +10,7 @@ class Module extends Model
     use HasFactory;
 
     protected $primaryKey = 'module_id';
-    protected $fillable = ['module_name', 'module_code', 'description', 'credits', 'logo', 'professor_id', 'faculty_id'];
-
-    public function professor()
-    {
-        return $this->belongsTo(Professor::class, 'professor_id');
-    }
-
-    public function faculty()
-    {
-        return $this->belongsTo(Faculty::class, 'faculty_id');
-    }
-
-    public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class, 'module_id');
-    }
+    protected $fillable = ['module_name', 'module_code', 'description', 'credits', 'logo'];
 
     public function assignments()
     {
@@ -37,19 +22,19 @@ class Module extends Model
         return $this->hasMany(Grade::class, 'module_id');
     }
 
-    public function discussions()
-    {
-        return $this->hasMany(Discussion::class, 'module_id');
-    }
-
     public function moduleContents()
     {
         return $this->hasMany(ModuleContent::class, 'module_id');
     }
 
-    // Define the relationship with the Student model through Enrollment(Chris dashboard)
-    public function students()
+    public function enrollments()
     {
-        return $this->belongsToMany(Student::class, 'enrollments', 'module_id', 'student_id');
+        return $this->hasMany(Enrollment::class, 'module_id');
     }
+    
+    public function teaches()
+    {
+        return $this->hasMany(Teaches::class, 'module_id');
+    }
+
 }

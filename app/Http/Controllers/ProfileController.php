@@ -59,27 +59,6 @@ class ProfileController extends Controller
         return Redirect::to('/');
 
 
-    }/**
-     * Display the student's dashboard with their enrolled modules. (Chris dashboard)
-     */
-    public function dashboard(): View
-    {
-        // Fetch the currently authenticated user
-        $user = auth()->user();
-
-        // Ensure the user is a student
-        if ($user->student) {
-            // Get the modules the student is enrolled in
-            $modules = $user->student->modules;
-
-            // Check if modules is not null and convert to empty collection if null
-            $modules = $modules ?? collect();
-
-            // Pass the modules to the view
-            return view('dashboard', compact('modules'));
-        }
-
-        // If the user is not a student, redirect to a different page
-        return redirect()->route('home');
     }
+
 }
